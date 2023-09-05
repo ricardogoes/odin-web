@@ -1,0 +1,42 @@
+.pagination-nav {
+  @apply mt-5
+    px-6
+    py-4
+    flex
+    flex-row
+    justify-between;
+}
+
+.pagination-content {
+  @apply flex items-center bg-white;
+}
+
+.pagination-item {
+  @apply px-4
+    py-2.5
+    text-gray-500
+    font-medium
+    transition-colors
+    duration-150
+    hover:bg-primary-50
+    hover:text-primary-600
+    hover:font-medium;
+}
+
+.pagination-dots {
+  @apply text-lg text-gray-500 font-medium;
+}
+
+.pagination-item-selected {
+  @apply pagination-item
+    text-primary-600
+    font-medium
+    bg-primary-50 !important;
+}
+
+.pagination-siblings {
+  @apply font-medium
+    text-base
+    text-gray-900
+    px-2;
+}

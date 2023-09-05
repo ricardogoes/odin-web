@@ -1,0 +1,20 @@
+.sidebar {
+  @apply relative w-full h-screen rounded-none border-none transition-all duration-200 ease-in-out overflow-hidden text-gray-400 bg-gray-800;
+}
+
+.brand-link {
+  @apply relative px-3 py-1 flex items-center space-x-4 justify-start h-10;
+}
+
+.menu-link {
+  @apply relative px-3 py-2 mt-3 flex items-center space-x-4 justify-start;
+}
+
+.link-text {
+  @apply font-medium transition-all duration-100 text-gray-400;
+}
+
+.bottom-link {
+  @apply flex items-center justify-center align-bottom w-full h-16 bg-gray-800 hover:bg-gray-700 hover:text-gray-300;
+}
+

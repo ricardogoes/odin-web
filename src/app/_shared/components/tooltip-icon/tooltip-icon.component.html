@@ -1,0 +1,12 @@
+<div
+  class="relative"
+  (mouseenter)="hover=true"
+  (mouseleave)="hover=false"
+>
+<div class="flex items-center justify-center cursor-pointer">
+  <ng-icon name="{{icon}}" size="24" class="mr-2"></ng-icon>
+  <div *ngIf="hover" class="absolute bottom-0 inline-block w-fit px-4 py-2 mb-6 text-white bg-gray-600 rounded-md z-0">
+    <span class="inline-block text-xs leading-tight">{{message}}</span>
+  </div>
+</div>
+</div>

@@ -1,0 +1,11 @@
+.container-auth {
+  @apply min-h-screen flex bg-slate-50;
+}
+
+.container-sidebar {
+  @apply w-16;
+}
+
+.container-main {
+  @apply flex-1 bg-white;
+}

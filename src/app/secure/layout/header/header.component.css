@@ -1,0 +1,13 @@
+.header {
+  @apply flex mx-auto px-3 justify-between bg-white h-12 border-b border-gray-300;
+}
+
+.account-text-container {
+  @apply flex flex-col items-start ml-3;
+}
+.profile-name {
+  @apply font-semibold text-sm text-gray-900;
+}
+.profile-email {
+  @apply text-sm text-gray-500;
+}

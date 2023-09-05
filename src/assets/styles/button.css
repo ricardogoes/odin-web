@@ -1,0 +1,172 @@
+
+.button {
+  @apply flex
+    items-center
+    justify-center
+    text-white
+    font-semibold
+    outline-2
+    rounded-md
+    shadow
+    ease-linear
+    transition-all
+    duration-150;
+}
+
+.button-sm{ @apply button h-9 text-sm py-2 px-3.5; }
+.button-md{ @apply button h-10 text-sm py-2.5 px-4; }
+.button-lg{ @apply button h-11 text-base py-2.5 px-4; }
+.button-xl{ @apply button h-12 text-base py-3 px-5; }
+
+/* #region Primary + */
+.button-primary {
+  @apply button
+  bg-primary-600
+  hover:bg-primary-700
+  focus:outline-none
+  focus:ring-4
+  focus:ring-primary-200
+  active:outline-none
+  active:ring
+  active:ring-primary-200
+  disabled:text-white
+  disabled:bg-primary-200
+  !important;
+}
+
+.button-primary-outlined {
+  @apply button-primary
+    bg-transparent
+    border-2
+    border-primary-300
+    text-primary-600
+    hover:bg-primary-50
+    disabled:text-primary-300
+    disabled:bg-transparent
+    disabled:border-primary-200
+    !important;
+}
+
+.button-primary-none {
+  @apply button-primary
+    bg-transparent
+    shadow-none
+    text-white
+    hover:bg-primary-50
+    disabled:text-primary-300
+    disabled:bg-transparent
+    !important;
+}
+/* #endregion */
+
+/* #region Secondary + */
+.button-secondary {
+  @apply button
+    bg-blue-600
+    hover:bg-blue-700
+    focus:outline-none focus:ring-4 focus:ring-blue-200
+    active:outline-none active:ring active:ring-blue-200
+    disabled:text-white
+    disabled:bg-blue-200
+    !important;
+}
+
+.button-secondary-outlined {
+  @apply button-secondary
+    bg-transparent
+    border-2
+    border-blue-300
+    text-blue-600
+    hover:bg-blue-50
+    disabled:text-blue-300
+    disabled:bg-transparent
+    disabled:border-blue-200
+    !important;
+}
+
+.button-secondary-none {
+  @apply button-secondary
+    bg-transparent
+    shadow-none
+    text-blue-700
+    hover:bg-blue-50
+    disabled:text-blue-300
+    disabled:hover:bg-transparent
+    !important;
+}
+/* #endregion */
+
+/* #region Error + */
+.button-error {
+  @apply button
+    bg-error-600
+    hover:bg-error-700
+    focus:outline-none focus:ring-4 focus:ring-error-200
+    active:outline-none active:ring active:ring-error-200
+    disabled:text-white
+    disabled:bg-error-200
+    !important;
+}
+
+.button-error-outlined {
+  @apply button-error
+    bg-transparent
+    border-2
+    border-error-300
+    text-error-600
+    hover:bg-error-50
+    disabled:text-error-300
+    disabled:bg-transparent
+    disabled:border-error-200
+    !important;
+}
+
+.button-error-none {
+  @apply button-error
+    bg-transparent
+    shadow-none
+    text-error-700
+    hover:bg-error-50
+    disabled:text-error-300
+    disabled:hover:bg-transparent
+    !important;
+}
+/* #endregion */
+
+/* #region Gray + */
+.button-gray {
+  @apply button
+    bg-gray-600
+    hover:bg-gray-700
+    focus:outline-none focus:ring-4 focus:ring-gray-200
+    active:outline-none active:ring active:ring-gray-200
+    disabled:text-white
+    disabled:bg-gray-200
+    !important;
+}
+
+.button-gray-outlined {
+  @apply
+    bg-transparent
+    border-2
+    border-gray-300
+    text-gray-600
+    hover:bg-gray-50
+    disabled:text-gray-300
+    disabled:bg-transparent
+    disabled:border-gray-200
+    !important;
+}
+
+.button-gray-none {
+  @apply
+    bg-transparent
+    shadow-none
+    text-gray-700
+    hover:bg-gray-50
+    disabled:text-gray-300
+    disabled:bg-transparent
+    !important;
+}
+
+/* #endregion */

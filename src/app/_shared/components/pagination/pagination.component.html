@@ -1,0 +1,36 @@
+<div class="flex justify-end items-center my-4 text-xs">
+  <div class="flex flex-col lg:flex-row items-center space-x-2 mr-4">
+    <span class="ms-4 text-gray-600 font-medium">Exibindo:</span>
+    <select
+      [value]="paginationData!.page_size"
+      (change)="changePageSize($any($event.target).value)"
+      class="py-2 px-2  text-gray-600 font-medium rounded hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50 inline-flex items-center">
+      <option value="5">5 itens</option>
+      <option value="10">10 itens</option>
+      <option value="20">20 itens</option>
+      <option value="30">30 itens</option>
+    </select>
+  </div>
+  <nav *ngIf="hasMoreThanOnePage" aria-label="Pagination" class="flex items-center flex-wrap mr-4">
+    <ul class="inline-flex">
+      <li>
+        <a (click)="previousPageNumber()" class="px-3 py-2 border border-r-0 rounded-l-lg hover:bg-gray-200" >
+          <ng-icon name="heroArrowLeft"></ng-icon>
+        </a>
+      </li>
+      <li *ngFor="let page of totalPages">
+        <a
+          class="px-4 py-2 border border-r-0 hover:bg-gray-200"
+          [ngClass]="{'pagination-item-selected': page == paginationData!.page_number}"
+          (click)="changePageNumber(page)">
+          {{page}}
+        </a>
+      </li>
+      <li>
+        <a (click)="nextPageNumber()" class="px-4 py-2 border rounded-r-lg hover:bg-gray-200">
+          <ng-icon name="heroArrowRight"></ng-icon>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

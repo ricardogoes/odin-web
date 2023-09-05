@@ -1,0 +1,133 @@
+  <div class="container fixed {{ width }} antialiased">
+    <input type="hidden" name="date" x-ref="date" />
+    <input
+      id="{{ id }}"
+      type="text"
+      [formControlName]="controlName"
+      [(ngModel)]="datepickerValue"
+      (click)="showDatepicker = !showDatepicker"
+      (keydown.escape)="showDatepicker = false"
+      class="input-sm -z-10"
+      placeholder="Select date"
+    />
+    <div class="absolute top-0 right-0 p-2">
+      <svg
+        class="h-6 w-6 text-gray-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+        />
+      </svg>
+    </div>
+    <div
+      class="bg-gray-400 mt-12 rounded-lg shadow p-2 absolute top-0 right-0"
+      style="width: 17rem"
+      [hidden]="!showDatepicker"
+      (keydown.away)="showDatepicker = false"
+    >
+      <div class="flex justify-between items-center mb-2">
+        <div>
+          <button
+            type="button"
+            class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
+            [ngClass]="{ 'cursor-not-allowed opacity-25': month === 0 }"
+            [disabled]="month === 0 ? true : false"
+            (click)="month = month - 1"
+            (click)="getNoOfDays()"
+          >
+            <svg
+              class="h-3 w-3 text-gray-500 inline-flex"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+        </div>
+        <div>
+          <span class="text-sm font-bold text-gray-800">{{
+            MONTH_NAMES[month]
+          }}</span>
+          <span class="ml-1 text-sm text-gray-600 font-normal">{{ year }}</span>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
+            [ngClass]="{
+              'cursor-not-allowed opacity-25': month === 11
+            }"
+            [disabled]="month === 11 ? true : false"
+            (click)="month = month + 1"
+            (click)="getNoOfDays()"
+          >
+            <svg
+              class="h-3 w-3 text-gray-500 inline-flex"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap mb-3 -mx-1">
+        <ng-container *ngFor="let day of DAYS; let index = index">
+          <div style="width: 14.26%">
+            <div class="text-gray-800 font-medium text-center text-xs">
+              {{ day }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="flex flex-wrap -mx-1">
+        <ng-container *ngFor="let blankday of blankdays">
+          <div
+            style="width: 14.28%"
+            class="text-center border-none border-transparent text-xs"
+          ></div>
+        </ng-container>
+        <ng-container
+          *ngFor="
+            let date of no_of_days;
+            let dateIndex = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div style="width: 14.28%">
+            <div
+              (click)="getDateValue(date)"
+              class="cursor-pointer text-center text-xs rounded-full leading-loose transition ease-in-out duration-100"
+              [ngClass]="{
+                'bg-blue-500 text-white': isToday(date) === true,
+                'text-gray-700 hover:bg-blue-200': isToday(date) === false
+              }"
+            >
+              {{ date }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+

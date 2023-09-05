@@ -1,0 +1,67 @@
+.table-container {
+  @apply table-auto
+    border
+    border-gray-200
+    bg-white
+    overflow-hidden
+    rounded-md
+    mx-4
+    shadow-xs;
+}
+
+.table-content {
+  @apply min-w-full divide-y divide-gray-200;
+}
+
+.table-data-cell {
+  @apply px-6
+    py-2
+    text-sm
+    h-12
+    font-normal
+    text-gray-600
+    align-middle;
+}
+
+.table-header {
+  @apply bg-gray-50 border-y border-gray-200;
+}
+
+.table-header-cell {
+  @apply px-6
+    py-2
+    text-left
+    text-base
+    font-normal
+    text-gray-900
+    tracking-wider;
+}
+
+.table-header-cell-column {
+  @apply w-full
+    inline-flex
+    items-center;
+}
+
+.table-header-cell-title {
+  @apply text-gray-600 text-xs font-medium;
+}
+
+.table-header-sort {
+  @apply w-4
+    h-4
+    text-gray-500
+    font-bold
+    cursor-pointer
+    hover:text-gray-900;
+}
+
+.table-row {
+  @apply cursor-pointer
+    border-b
+    border-gray-200
+    transition
+    duration-500
+    ease-in-out
+    hover:bg-gray-200;
+}

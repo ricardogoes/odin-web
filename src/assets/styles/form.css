@@ -1,0 +1,3 @@
+.form-container {
+  @apply grid lg:grid-flow-row md:grid-flow-row sm:grid-flow-row lg:grid-cols-12 md:grid-cols-6 sm:grid-cols-1 gap-x-2 gap-y-4;
+}

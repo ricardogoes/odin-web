@@ -1,0 +1,9 @@
+.container-no-auth {
+  @apply justify-center h-screen flex bg-white items-center;
+}
+.container-left {
+  @apply w-1/2 flex-col flex self-start items-center h-full justify-center;
+}
+.container-right {
+  @apply w-1/2 flex self-end items-center h-full justify-center bg-gray-100;
+}

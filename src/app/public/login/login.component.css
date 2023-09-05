@@ -1,0 +1,29 @@
+.mainLogin {
+  @apply my-6 w-96;
+}
+
+.mainLogin h2 {
+  @apply text-center text-xl my-3;
+}
+
+.mainLogin h2 span {
+  @apply text-primary-600;
+}
+
+.mainLogin h3 {
+  @apply text-center text-xl my-3 text-gray-500;
+}
+.mainLogin h3 b {
+  @apply text-gray-950;
+}
+
+.divLogin {
+  @apply mt-10;
+}
+.title {
+  @apply text-4xl text-gray-900 font-semibold;
+}
+
+.subtitle {
+  @apply text-base text-gray-500 font-normal mt-3;
+}

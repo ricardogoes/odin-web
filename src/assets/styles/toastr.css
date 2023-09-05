@@ -1,0 +1,10 @@
+.toast-success {
+  @apply bg-primary-600 !important;
+}
+.toast-error {
+  @apply bg-error-600 !important;
+}
+.toast-warning {
+  @apply bg-warning-600 !important;
+}
+

@@ -1,0 +1,45 @@
+<table class="table-content">
+  <thead class="table-header">
+    <tr>
+      <th *ngFor="let column of columns" class="table-header-cell" scope="col">
+        <div class="table-header-cell-column items-center">
+          <p class="table-header-cell-title">{{ column.header_name }}</p>
+          <div *ngIf="column.sort" class="ml-2" (click)="sortItems(column)">
+            <ng-icon name="{{this.columnsSortOrder.get(column.field)! === 2 ? 'heroMinus' : (this.columnsSortOrder.get(column.field)! === 0 ? 'heroArrowDown' : 'heroArrowUp')}}" class="table-header-sort"></ng-icon>
+          </div>
+        </div>
+      </th>
+      <th class="table-header-cell" scope="col"></th>
+    </tr>
+  </thead>
+  <tbody class="bg-white">
+    <tr *ngFor="let item of items" class="table-row">
+      <td *ngFor="let column of columns" class="table-data-cell">
+        {{ getItemValue(item, column) }}
+      </td>
+      <td class="table-data-cell">
+        <div class="flex flex-row items-center justify-end">
+          <ng-template ngFor let-action [ngForOf]="actions">
+            <odin-tooltip-icon
+              [icon]="action.icon"
+              [message]="action.tooltip"
+              (click)="triggerAction(action.action)"
+            ></odin-tooltip-icon>
+          </ng-template>
+          <odin-tooltip-icon
+            *ngIf="canDeactivateItem && getIsActiveItemValue(item)"
+            [icon]="'heroNoSymbol'"
+            [message]="'Desativar'"
+            (click)="triggerAction('deactivate')"
+          ></odin-tooltip-icon>
+          <odin-tooltip-icon
+            *ngIf="canDeactivateItem && !getIsActiveItemValue(item)"
+            [icon]="'heroCheck'"
+            [message]="'Ativar'"
+            (click)="triggerAction('activate')"
+          ></odin-tooltip-icon>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

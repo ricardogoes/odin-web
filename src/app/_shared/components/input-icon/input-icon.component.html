@@ -1,0 +1,11 @@
+<div class="input-container">
+  <div class="icon-wrapper">
+    <ng-icon name="{{icon}}"></ng-icon>
+  </div>
+  <input type="text"
+    id="search"
+    class="input-sm input-padding"
+    placeholder="{{placeholder}}"
+    (keyup)="search($any($event.target).value)"
+  />
+</div>

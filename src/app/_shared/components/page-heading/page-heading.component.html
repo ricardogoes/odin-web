@@ -1,0 +1,20 @@
+<div class="flex flex-col justify-between mt-2 ms-4">
+  <h1>{{title}}</h1>
+  <div class="flex items-center mt-2">
+    <ul *ngIf="links && links.length > 0" class="flex items-center">
+      <li class="inline-flex items-baseline">
+        <a routerLink="/secure/home" class="text-gray-600 hover:text-blue-500">
+          <ng-icon name="heroHomeSolid"></ng-icon>
+        </a>
+      </li>
+
+      <li *ngFor="let link of links" class="inline-flex items-baseline">
+        <ng-icon class="mx-2" name="heroChevronRightSolid" size="12" ></ng-icon>
+        <a routerLink="{{link.route}}" class="text-gray-600 hover:text-blue-500">
+          {{link.name}}
+        </a>
+
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,217 @@
+<odin-page-heading
+  [title]="'Departamentos'"
+  [links]="breadCrumbsLinks"
+></odin-page-heading>
+
+<div class="flex mt-4 ms-4 justify-between">
+  <div class="flex items-center">
+    <button
+      type="button"
+      class="button-primary button-sm col-span-full row-end-1 col-start-1"
+      (click)="handleOpenDetails('new')"
+    >
+      <ng-icon class="mr-1" name="heroPlus"></ng-icon>
+      Novo Departamento
+    </button>
+    <div class="relative ml-3">
+      <button
+        type="button"
+        class="button-gray-none button-sm row-end-1 col-start-1"
+        (click)="toggleActionMenu()">
+        <ng-icon name="heroEllipsisVertical" size="24"></ng-icon>
+      </button>
+      <div *ngIf="showActionMenu" class="absolute left-0 z-10 mt-2 w-40 pr-2 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+        <a (click)="handleUploadData()" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem">
+          <ng-icon class="mr-1" name="heroArrowUpTray"></ng-icon>
+          Upload Excel
+        </a>
+      </div>
+    </div>
+  </div>
+  <odin-search-list-heading
+    (handleSearch)="handleSearch($event)"
+    (handleOpenFiltersModel)="handleOpenFiltersModel()"
+    (handleExportData)="handleExportData()"
+  ></odin-search-list-heading>
+</div>
+<div *ngIf="paginatedApiResponse$ | async" class="table-container mt-2">
+  <!--Table-->
+  <odin-table
+    [columns]="columns"
+    [columnsSortOrder]="columnsSortOrder"
+    [items]="departments"
+    [actions]="actions"
+    [canDeactivateItem]="true"
+    (handleAction)="handleAction($event)"
+    (handleSort)="handleSort($event)"
+  ></odin-table>
+
+  <!--Pagination-->
+  <odin-pagination
+    [paginationData]="paginationData"
+    (handleChangePagination)="handleChangePagination($event)"
+  ></odin-pagination>
+</div>
+
+<!--Filters modal-->
+<div *ngIf="showFilterModal" class="fixed inset-y-0 z-50 right-0 w-[400px]">
+  <!--<div *ngIf="showFilterModal" class="fixed inset-y-0 right-0 w-[300px] h-full border">-->
+  <div class="relative w-auto mx-auto max-w-6xl">
+    <!--content-->
+    <form [formGroup]="filterForm" (ngSubmit)="handleFilterData()" autocomplete="off">
+      <div
+        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-screen bg-white outline-none focus:outline-none"
+      >
+        <!--header-->
+        <div
+          class="flex items-baseline justify-between ps-6 py-3 border-b border-solid border-slate-200 rounded-t"
+        >
+          <h2>Filtros</h2>
+          <button
+            type="button"
+            class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            (click)="toggleModal()"
+          >
+            <span
+              class="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none"
+              >×</span
+            >
+          </button>
+        </div>
+
+        <!--body-->
+        <div class="relative p-6 flex-auto">
+          <div class="col-span-full">
+            <label for="username" class="label">Nome</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              class="input-sm"
+              placeholder="Nome do departamento"
+            />
+          </div>
+          <div class="col-span-full mt-2">
+            <label for="is_active" class="label">Status</label>
+            <select
+              id="is_active"
+              formControlName="is_active"
+              class="input-sm select"
+            >
+              <option value=""></option>
+              <option value="true">Ativo</option>
+              <option value="false">Inativo</option>
+            </select>
+          </div>
+
+          <div class="col-span-full mt-4">
+            <label class="label">Criado em</label>
+          </div>
+          <div class="relative columns-2 mt-2 z-50">
+            <label for="created_at_start" class="label">Data inicial</label>
+            <odin-date-picker
+              [id]="'created_at_start'"
+              [controlName]="'created_at_start'"
+              [width]="'w-[168px]'"
+            ></odin-date-picker>
+
+            <label for="created_at_end" class="label">Data final</label>
+            <odin-date-picker
+              [id]="'created_at_end'"
+              [controlName]="'created_at_end'"
+              [width]="'w-[168px]'"
+            ></odin-date-picker>
+          </div>
+
+          <div class="col-span-full mt-12">
+            <label for="created_by" class="label">Criado por</label>
+            <select
+              id="created_by"
+              formControlName="created_by"
+              class="input-sm select"
+            >
+              <option value=""></option>
+              <option
+                *ngFor="let createdBy of distinctCreatedBy"
+                [value]="createdBy"
+              >
+                {{ createdBy }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-span-full mt-4">
+            <label class="label">Atualizado em</label>
+          </div>
+          <div class="relative columns-2 mt-2 z-40">
+            <label for="last_updated_at_start" class="label"
+              >Data inicial</label
+            >
+            <odin-date-picker
+              [id]="'last_updated_at_start'"
+              [controlName]="'last_updated_at_start'"
+              [width]="'w-[168px]'"
+            ></odin-date-picker>
+            <label for="last_updated_at_end" class="label">Data final</label>
+            <odin-date-picker
+              [id]="'last_updated_at_start'"
+              [controlName]="'last_updated_at_start'"
+              [width]="'w-[168px]'"
+            ></odin-date-picker>
+          </div>
+
+          <div class="col-span-full mt-12">
+            <label for="last_updated_by" class="label">Atualizado por</label>
+            <select
+              id="last_updated_by"
+              formControlName="last_updated_by"
+              class="input-sm select"
+            >
+              <option value=""></option>
+              <option
+                *ngFor="let lastUpdatedBy of distinctLastUpdatedBy"
+                [value]="lastUpdatedBy"
+              >
+                {{ lastUpdatedBy }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!--footer-->
+        <div
+          class="flex items-center justify-end px-2 py-3 border-t bottom-0 border-solid border-slate-200 rounded-b"
+        >
+          <button
+            type="button"
+            class="button-gray button-sm col-span-full row-end-1 col-start-1 mr-2"
+            (click)="handleResetFilters()"
+          >
+            <ng-icon
+              name="heroBackspace"
+              size="16"
+              class="mr-2"
+            ></ng-icon>
+            Limpar
+          </button>
+          <button
+            type="submit"
+            class="button-primary button-sm col-span-full row-end-1 col-start-1 mr-2"
+          >
+            <ng-icon
+              name="heroMagnifyingGlass"
+              size="16"
+              class="mr-2"
+            ></ng-icon>
+            Filtrar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div
+  *ngIf="showFilterModal"
+  class="opacity-25 fixed inset-0 z-40 bg-black"
+></div>
+`

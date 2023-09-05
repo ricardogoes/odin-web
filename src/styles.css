@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+
+  h1 {
+    @apply text-3xl text-gray-900 font-medium;
+  }
+
+  h2 {
+    @apply text-lg font-medium text-gray-900;
+  }
+}
+
+@import url("assets/styles/button.css");
+@import url("assets/styles/form.css");
+@import url("assets/styles/input.css");
+@import url("assets/styles/table.css");
+@import url("assets/styles/toastr.css");

@@ -1,0 +1,56 @@
+<div class="mainLogin">
+  <div>
+    <h1 class="title">Seja Bem-vindo(a)!</h1>
+    <h4 class="subtitle">Por favor, insira seus dados abaixo.</h4>
+  </div>
+  <div class="divLogin">
+    <form
+      class="form-container"
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+      autocomplete="off"
+    >
+      <div class="col-span-full">
+        <label for="username" class="label">Username</label>
+        <input type="text"
+          id="username"
+          formControlName="Username"
+          class="input" [ngClass]="{'input-error': errorMessage['Username']}"
+          placeholder="Username"
+        />
+        <div class="text-error-500 text-sm" *ngIf="errorMessage['Username']">
+          <span [innerHTML]="errorMessage['Username']"></span>
+        </div>
+      </div>
+      <div class="col-span-full">
+        <label for="password"class="label">Password</label>
+        <input type="password"
+          id="password"
+          formControlName="Password"
+          class="input" [ngClass]="{'input-error': errorMessage['Password']}"
+          placeholder="Password"
+        />
+        <div class="text-error-500 text-sm" *ngIf="errorMessage['Password']">
+          <span [innerHTML]="errorMessage['Password']"></span>
+        </div>
+      </div>
+
+      <div class="col-span-full">
+        <button type="submit"
+          class="button-primary button-md w-full justify-center col-span-full row-end-1 col-start-1"
+          [disabled]="loginForm.invalid">
+          Entrar
+        </button>
+      </div>
+
+      <div class="col-span-full mt-2">
+        <button type="button"
+          class="w-full mr-1 justify-center text-primary-500 text-sm"
+          (click)="resetPassword()"
+          title="Esqueceu sua senha?">
+          Esqueceu sua senha?
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="search-container">
+  <div [formGroup]="searchFormGroup" class="search-input">
+    <input
+      type="text"
+      id="search"
+      formControlName="search"
+      class="input-sm input-padding w-64"
+      placeholder="Pesquisar pelo nome..."
+    />
+  </div>
+  <div class="search-filter-button">
+    <button
+      type="button"
+      (click)="openFiltersModal()"
+      class="button-gray-outlined button-sm col-span-full row-end-1 col-start-1">
+      <ng-icon class="mr-1" name="heroFunnel"></ng-icon>
+      Filtros
+    </button>
+  </div>
+  <div class="search-filter-button">
+    <button
+      type="button"
+      (click)="exportData()"
+      class="button-gray-outlined button-sm col-span-full row-end-1 col-start-1 mr-2">
+      <ng-icon class="mr-1" name="heroArrowDownTray"></ng-icon>
+      Exportar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+.search-container {
+  @apply flex gap-2 items-center mr-2;
+}
+
+.search-input {
+  @apply col-span-3;
+}
+
+.search-input-select {
+  @apply col-span-2;
+}
+
+.search-filter-button {
+  @apply col-span-2 col-start-13;
+}
