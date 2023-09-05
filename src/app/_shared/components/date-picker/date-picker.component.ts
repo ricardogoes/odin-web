@@ -12,9 +12,9 @@ import { ControlContainer, FormGroupDirective, } from '@angular/forms';
   ]
 })
 export class DatePickerComponent implements OnInit {
-  @Input() id: string = '';
-  @Input() controlName: string = '';
-  @Input() width: string = 'w-full';
+  @Input() id = '';
+  @Input() controlName = '';
+  @Input() width = 'w-full';
 
   MONTH_NAMES = [
     'Janeiro',
@@ -39,15 +39,13 @@ export class DatePickerComponent implements OnInit {
   no_of_days = [] as number[];
   blankdays = [] as number[];
 
-  constructor() {}
-
   ngOnInit(): void {
     this.initDate();
     this.getNoOfDays();
   }
 
   initDate() {
-    let today = new Date();
+    const today = new Date();
     this.month = today.getMonth();
     this.year = today.getFullYear();
     this.datepickerValue = new Date(
@@ -64,7 +62,7 @@ export class DatePickerComponent implements OnInit {
   }
 
   getDateValue(date: any) {
-    let selectedDate = new Date(this.year, this.month, date);
+    const selectedDate = new Date(this.year, this.month, date);
     this.datepickerValue = selectedDate.toLocaleDateString();
     this.showDatepicker = false;
   }
@@ -73,14 +71,14 @@ export class DatePickerComponent implements OnInit {
     const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
 
     // find where to start calendar day of week
-    let dayOfWeek = new Date(this.year, this.month).getDay();
-    let blankdaysArray = [];
-    for (var i = 1; i <= dayOfWeek; i++) {
+    const dayOfWeek = new Date(this.year, this.month).getDay();
+    const blankdaysArray = [];
+    for (let i = 1; i <= dayOfWeek; i++) {
       blankdaysArray.push(i);
     }
 
-    let daysArray = [];
-    for (var i = 1; i <= daysInMonth; i++) {
+    const daysArray = [];
+    for (let i = 1; i <= daysInMonth; i++) {
       daysArray.push(i);
     }
 

@@ -27,10 +27,11 @@
           "error",
           {
             "type": "element",
-            "prefix": "app",
+            "prefix": "odin",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/no-explicit-any": "off"
       }
     },
     {

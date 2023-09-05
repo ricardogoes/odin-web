@@ -37,10 +37,10 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
 
   departments: Department[] = [];
 
-  nameToBeSearched: string = '';
+  nameToBeSearched = '';
 
-  showFilterModal: boolean = false;
-  showActionMenu: boolean = false;
+  showFilterModal = false;
+  showActionMenu = false;
 
   filterForm: FormGroup;
 
@@ -55,7 +55,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
 
     this.breadCrumbsLinks = [
       {
-        name: 'Departmentos',
+        name: 'Departamentos',
         route: '/secure/departments',
       },
     ];

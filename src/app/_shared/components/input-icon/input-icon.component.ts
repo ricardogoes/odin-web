@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'odin-input-icon',
@@ -7,12 +7,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class InputIconComponent{
 
-  @Input() icon: string = '';
-  @Input() placeholder: string = '';
-  @Input() searchable: boolean = false;
+  @Input() icon = '';
+  @Input() placeholder = '';
+  @Input() searchable = false;
   @Output() handleSearch = new EventEmitter<string>();
-
-  constructor() {}
 
   search(value: string): void {
     if(!this.searchable) return;

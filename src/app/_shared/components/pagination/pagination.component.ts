@@ -8,41 +8,39 @@ import { PaginationParams } from '../../models/pagination-params.model';
 })
 export class PaginationComponent {
 
-  @Input() paginationData: PaginationParams | undefined;
+  @Input() paginationData!: PaginationParams;
   @Output() handleChangePagination = new EventEmitter<PaginationParams>();
-
-  constructor() {}
 
   // Pagination functions
   changePageSize(selectedValue: number): void {
-    this.paginationData!.page_size = selectedValue;
-    this.handleChangePagination.emit(this.paginationData!);
+    this.paginationData.page_size = selectedValue;
+    this.handleChangePagination.emit(this.paginationData);
   }
 
   changePageNumber(pageNumber: number): void {
-    this.paginationData!.page_number = pageNumber;
-    this.handleChangePagination.emit(this.paginationData!);
+    this.paginationData.page_number = pageNumber;
+    this.handleChangePagination.emit(this.paginationData);
   }
 
   nextPageNumber(): void {
-    this.paginationData!.page_number += 1;
-    this.handleChangePagination.emit(this.paginationData!);
+    this.paginationData.page_number += 1;
+    this.handleChangePagination.emit(this.paginationData);
   }
 
   previousPageNumber(): void {
-    this.paginationData!.page_number -= 1;
-    this.handleChangePagination.emit(this.paginationData!);
+    this.paginationData.page_number -= 1;
+    this.handleChangePagination.emit(this.paginationData);
   }
 
   get totalPages(): number[] {
-    let pages: number[] = [];
-    for (let i = 1; i <= this.paginationData!.total_pages; i++) {
+    const pages: number[] = [];
+    for (let i = 1; i <= this.paginationData.total_pages; i++) {
       pages.push(i);
     }
     return pages;
   }
 
   get hasMoreThanOnePage(): boolean {
-    return this.paginationData!.total_pages > 1;
+    return this.paginationData.total_pages > 1;
   }
 }

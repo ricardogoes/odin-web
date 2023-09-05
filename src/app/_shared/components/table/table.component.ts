@@ -19,7 +19,7 @@ export class TableComponent<T> {
   @Input() columnsSortOrder: Map<string, TableSort> = new Map<string, TableSort>();
   @Input() items: T[] = [];
   @Input() actions: TableAction[] = [];
-  @Input() canDeactivateItem: boolean = false;
+  @Input() canDeactivateItem = false;
 
   @Output() handleAction = new EventEmitter<string>();
   @Output() handleSort = new EventEmitter<{ field: string, sort_order: TableSort }>();
@@ -30,7 +30,7 @@ export class TableComponent<T> {
   ) {}
 
   getItemValue(item: T, column: TableColumn): any {
-    let value = item[column.field as keyof typeof item];
+    const value = item[column.field as keyof typeof item];
 
     switch(column.pipe) {
       case TablePipe.ATIVO:
@@ -43,8 +43,8 @@ export class TableComponent<T> {
   }
 
   getIsActiveItemValue(item: T): any {
-    const column = this.columns.find(x => x.field == 'is_active')!;
-    return item[column.field as keyof typeof item];
+    const column = this.columns.find(x => x.field == 'is_active');
+    return item[column?.field as keyof typeof item];
   }
 
   triggerAction(action: string): void {
@@ -52,7 +52,7 @@ export class TableComponent<T> {
   }
 
   sortItems(column: TableColumn): void {
-    const sortOrder = this.columnsSortOrder.get(column.field)!;
+    const sortOrder = this.columnsSortOrder.get(column.field) ?? TableSort.NOT_ORDERED;
     this.handleSort.emit({ field: column.field, sort_order: sortOrder });
   }
 }

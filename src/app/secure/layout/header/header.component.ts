@@ -8,7 +8,8 @@ import { AuthService } from 'src/app/_shared/services/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  isProfileMenuOpened: boolean = false;
+
+  isProfileMenuOpened = false;
 
   constructor(
     private authService: AuthService,

@@ -8,8 +8,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class SidebarComponent {
   @Output() handleExpandSidebar = new EventEmitter();
 
-  constructor() {}
-
   expandSidebar(): void {
     this.handleExpandSidebar.emit();
   }

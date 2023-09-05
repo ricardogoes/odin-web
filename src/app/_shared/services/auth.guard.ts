@@ -1,24 +1,19 @@
 import { Injectable } from '@angular/core';
 import {
-  Router,
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  CanActivateChild,
-  CanLoad,
+  Router
 } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AuthGuard {
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivate(): boolean {
     if (this.authService.checkLogin()) {
       return true;
     }
@@ -28,8 +23,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return false;
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.canActivate(route, state);
+  canActivateChild(): boolean {
+    return this.canActivate();
   }
 
   canLoad(): boolean {

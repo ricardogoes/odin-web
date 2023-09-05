@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnInit,
   ViewChildren,
 } from '@angular/core';
 import {
@@ -13,7 +12,6 @@ import {
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { FormBaseComponent } from 'src/app/_shared/components/form-base/form-base.component';
@@ -26,7 +24,7 @@ import { AuthService } from 'src/app/_shared/services/auth.service';
 })
 export class LoginComponent
   extends FormBaseComponent
-  implements OnInit, AfterViewInit
+  implements AfterViewInit
 {
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[] = [];
@@ -59,8 +57,6 @@ export class LoginComponent
     super.configurarMensagensValidacao(validationMessages);
   }
 
-  ngOnInit(): void {}
-
   ngAfterViewInit(): void {
     super.configurarValidacoesFormulario(
       this.formInputElements,
@@ -78,7 +74,7 @@ export class LoginComponent
       next: () => {
         this.router.navigate(['secure/home']);
       },
-      error: (error) => {
+      error: () => {
         this.toastrService.error('Usuário/senha inválidos', 'Erro');
       },
     });

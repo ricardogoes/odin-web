@@ -20,7 +20,7 @@ export abstract class FormBaseComponent {
     formGroup: FormGroup
   ): void {
     setTimeout(() => {
-      let controlBlurs: Observable<any>[] = formInputElements.map(
+      const controlBlurs: Observable<any>[] = formInputElements.map(
         (formControl: ElementRef) =>
           fromEvent(formControl.nativeElement, 'blur')
       );

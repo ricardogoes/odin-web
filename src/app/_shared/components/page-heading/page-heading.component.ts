@@ -8,8 +8,6 @@ import { BreadcrumbLink } from './breadcrumb-link.model';
 })
 export class PageHeadingComponent {
 
-  @Input() title: string = '';
+  @Input() title = '';
   @Input() links: BreadcrumbLink[] = [];
-
-  constructor() {}
 }

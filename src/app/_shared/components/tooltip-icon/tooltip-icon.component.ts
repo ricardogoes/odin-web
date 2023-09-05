@@ -6,10 +6,8 @@ import { Component, Input } from '@angular/core';
 })
 export class TooltipIconComponent {
 
-  @Input() icon: string = '';
-  @Input() message: string = '';
+  @Input() icon = '';
+  @Input() message = '';
 
-  hover: boolean = false;
-
-  constructor() {}
+  hover = false;
 }
