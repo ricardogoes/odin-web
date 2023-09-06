@@ -21,7 +21,7 @@
         <ng-icon name="heroEllipsisVertical" size="24"></ng-icon>
       </button>
       <div *ngIf="showActionMenu" class="absolute left-0 z-10 mt-2 w-40 pr-2 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-        <a (click)="handleUploadData()" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem">
+        <a (click)="handleUploadData()" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" aria-hidden="true">
           <ng-icon class="mr-1" name="heroArrowUpTray"></ng-icon>
           Upload Excel
         </a>
@@ -105,7 +105,7 @@
           </div>
 
           <div class="col-span-full mt-4">
-            <label class="label">Criado em</label>
+            <span class="label">Criado em</span>
           </div>
           <div class="relative columns-2 mt-2 z-50">
             <label for="created_at_start" class="label">Data inicial</label>
@@ -141,7 +141,7 @@
           </div>
 
           <div class="col-span-full mt-4">
-            <label class="label">Atualizado em</label>
+            <span class="label">Atualizado em</span>
           </div>
           <div class="relative columns-2 mt-2 z-40">
             <label for="last_updated_at_start" class="label"

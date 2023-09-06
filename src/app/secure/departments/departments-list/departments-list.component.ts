@@ -8,7 +8,7 @@ import { IComponentList } from 'src/app/_shared/interfaces/component-list.interf
 
 import { BreadcrumbLink } from 'src/app/_shared/components/page-heading/breadcrumb-link.model';
 import { PaginatedApiResponse } from 'src/app/_shared/models/paginated-api-response.model';
-import { Department } from '../departments.model';
+import { Department } from '../models/departments.model';
 import { DepartmentsService } from '../departments.service';
 import { PaginationParams } from 'src/app/_shared/models/pagination-params.model';
 
@@ -17,12 +17,13 @@ import { TableColumn } from 'src/app/_shared/components/table/models/table-colum
 import { TablePipe } from 'src/app/_shared/components/table/models/table-pipe.enum';
 import { TableSort } from 'src/app/_shared/components/table/models/table-sort.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'odin-departments-list',
   templateUrl: 'departments-list.component.html',
 })
-export class DepartmentsListComponent implements OnInit, IComponentList {
+export class DepartmentsListComponent implements OnInit, IComponentList<Department> {
   breadCrumbsLinks: BreadcrumbLink[];
 
   columns: TableColumn[];
@@ -32,8 +33,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
   paginationData: PaginationParams;
   queryParams: string;
 
-  paginatedApiResponse$: Observable<PaginatedApiResponse<Department>> =
-    new Observable<PaginatedApiResponse<Department>>();
+  paginatedApiResponse$: Observable<PaginatedApiResponse<Department>> = new Observable<PaginatedApiResponse<Department>>();
 
   departments: Department[] = [];
 
@@ -48,6 +48,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
     private titleService: Title,
     private fb: FormBuilder,
     private departmentsService: DepartmentsService,
+    private router: Router,
     private spinner: NgxSpinnerService,
     private toastrService: ToastrService
   ) {
@@ -114,6 +115,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.load();
   }
 
@@ -123,6 +125,17 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
 
   get distinctLastUpdatedBy(): string[] {
     return [...new Set(this.departments.map((item) => item.last_updated_by))];
+  }
+
+  setDefaultQueryParams(): void {
+    this.paginationData = {
+      page_number: 1,
+      page_size: 5,
+      total_pages: 0,
+      total_records: 0,
+    };
+
+    this.queryParams = `?page_number=${this.paginationData.page_number}&page_size=${this.paginationData.page_size}`;
   }
 
   load(): void {
@@ -138,8 +151,8 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
             total_records: response.total_records,
           };
 
-          this.departments = response.items;
-
+          this.departments = [...response.items];
+          console.log(this.departments);
           this.spinner.hide();
           return response;
         }),
@@ -153,7 +166,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
   }
 
   handleOpenDetails(departmentId: string): void {
-    console.log('openDetail -> ' + departmentId);
+    this.router.navigate(['/secure/departments', departmentId]);
   }
 
   toggleActionMenu(): void {
@@ -190,9 +203,22 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
     this.load();
   }
 
-  handleAction(action: string): void {
-    console.log(`handleAction: ${action}`);
+  handleAction(params: { item: Department, action: string }): void {
+    switch(params.action) {
+      case "edit":
+        this.handleOpenDetails(params.item.id);
+        break;
+      case "activate":
+        this.activate(params.item.id);
+        break;
+      case "deactivate":
+        this.deactivate(params.item.id);
+        break;
+      default:
+        this.toastrService.error(`Invalid action: ${params.action}`);
+    }
   }
+
 
   handleSort(sortParams: { field: string; sort_order: TableSort }): void {
     this.queryParams = `?page_number=1&page_size=${this.paginationData.page_size}`;
@@ -259,4 +285,29 @@ export class DepartmentsListComponent implements OnInit, IComponentList {
     this.toggleActionMenu();
   }
 
+
+
+  private activate(departmentId: string): void {
+    this.departmentsService.activate(departmentId).subscribe({
+      next: () => {
+        this.toastrService.success('Departamento atualizado com sucesso', 'Sucesso');
+        this.load();
+      },
+      error: (error) => {
+        this.toastrService.error(error.detail, 'Erro');
+      }
+    });
+  }
+
+  private deactivate(departmentId: string): void {
+    this.departmentsService.deactivate(departmentId).subscribe({
+      next: () => {
+        this.toastrService.success('Departamento atualizado com sucesso', 'Sucesso');
+        this.load();
+      },
+      error: (error) => {
+        this.toastrService.error(error.detail, 'Erro');
+      }
+    });
+  }
 }

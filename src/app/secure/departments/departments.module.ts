@@ -16,15 +16,19 @@ import {
 
 import { PageHeadingModule } from 'src/app/_shared/components/page-heading/page-heading.module';
 import { SearchListHeadingModule } from 'src/app/_shared/components/search-list-heading/search-list-heading.module';
-
-import { DepartmentsListComponent } from './departments-list/departments-list.component';
-import { DepartmentsRoutingModule } from './departments-routing.module';
 import { PaginationModule } from 'src/app/_shared/components/pagination/pagination.module';
 import { TableModule } from 'src/app/_shared/components/table/table.module';
 import { DatePickerModule } from 'src/app/_shared/components/date-picker/date-picker.module';
 
+import { DepartmentsRoutingModule } from './departments-routing.module';
+import { DepartmentsListComponent } from './departments-list/departments-list.component';
+import { DepartmentsDetailComponent } from './departments-detail/departments-detail.component';
+
 @NgModule({
-  declarations: [DepartmentsListComponent],
+  declarations: [
+    DepartmentsListComponent,
+    DepartmentsDetailComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

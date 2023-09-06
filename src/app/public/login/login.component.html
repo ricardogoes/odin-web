@@ -15,7 +15,7 @@
         <input type="text"
           id="username"
           formControlName="Username"
-          class="input" [ngClass]="{'input-error': errorMessage['Username']}"
+          class="input mt-1" [ngClass]="{'input-error': errorMessage['Username']}"
           placeholder="Username"
         />
         <div class="text-error-500 text-sm" *ngIf="errorMessage['Username']">
@@ -27,7 +27,7 @@
         <input type="password"
           id="password"
           formControlName="Password"
-          class="input" [ngClass]="{'input-error': errorMessage['Password']}"
+          class="input mt-1" [ngClass]="{'input-error': errorMessage['Password']}"
           placeholder="Password"
         />
         <div class="text-error-500 text-sm" *ngIf="errorMessage['Password']">

@@ -39,4 +39,3 @@
 .input-error {
   @apply border-2 border-error-300 focus:outline-error-100 focus:ring-error-300;
 }
-

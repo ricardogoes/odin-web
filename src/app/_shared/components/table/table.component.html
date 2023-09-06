@@ -13,30 +13,32 @@
     </tr>
   </thead>
   <tbody class="bg-white">
-    <tr *ngFor="let item of items" class="table-row">
+    <tr *ngFor="let item of items" class="table-row" [ngClass]="{'table-row-inactive': !getIsActiveItemValue(item)}">
       <td *ngFor="let column of columns" class="table-data-cell">
         {{ getItemValue(item, column) }}
       </td>
       <td class="table-data-cell">
-        <div class="flex flex-row items-center justify-end">
+        <div *ngIf="getIsActiveItemValue(item)" class="flex flex-row items-center justify-end">
           <ng-template ngFor let-action [ngForOf]="actions">
             <odin-tooltip-icon
               [icon]="action.icon"
               [message]="action.tooltip"
-              (click)="triggerAction(action.action)"
+              (click)="triggerAction(item, action.action)"
             ></odin-tooltip-icon>
           </ng-template>
           <odin-tooltip-icon
             *ngIf="canDeactivateItem && getIsActiveItemValue(item)"
             [icon]="'heroNoSymbol'"
             [message]="'Desativar'"
-            (click)="triggerAction('deactivate')"
+            (click)="triggerAction(item, 'deactivate')"
           ></odin-tooltip-icon>
+        </div>
+        <div *ngIf="!getIsActiveItemValue(item)" class="flex flex-row items-center justify-end">
           <odin-tooltip-icon
             *ngIf="canDeactivateItem && !getIsActiveItemValue(item)"
             [icon]="'heroCheck'"
             [message]="'Ativar'"
-            (click)="triggerAction('activate')"
+            (click)="triggerAction(item, 'activate')"
           ></odin-tooltip-icon>
         </div>
       </td>

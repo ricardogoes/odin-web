@@ -42,9 +42,18 @@ export class AuthService {
     sessionStorage.setItem('id_token', json.tokens.access_token);
     sessionStorage.setItem('access_token', json.tokens.access_token);
     sessionStorage.setItem('refresh_token', json.tokens.access_token);
+    sessionStorage.setItem('customer_id', 'b7ef3024-5f20-48d5-989d-0a0502f73968');
   }
 
   getLocalToken(): string {
     return sessionStorage.getItem('id_token') || '';
+  }
+
+  getLoggedUsername(): string {
+    return sessionStorage.getItem('username') || '';
+  }
+
+  getCustomerId(): string {
+    return sessionStorage.getItem('customer_id') || '';
   }
 }

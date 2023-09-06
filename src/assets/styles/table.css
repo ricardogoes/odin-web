@@ -19,7 +19,6 @@
     text-sm
     h-12
     font-normal
-    text-gray-600
     align-middle;
 }
 
@@ -64,4 +63,15 @@
     duration-500
     ease-in-out
     hover:bg-gray-200;
+}
+
+.table-row-inactive {
+  @apply cursor-pointer
+    border-b
+    border-gray-200
+    transition
+    duration-500
+    ease-in-out
+    hover:bg-gray-200
+    text-gray-400;
 }

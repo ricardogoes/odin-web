@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './_shared/services/auth.guard';
 
 const routes: Routes = [
@@ -17,6 +17,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
     initialNavigation: 'enabledBlocking',
+    preloadingStrategy: PreloadAllModules,
     scrollPositionRestoration: 'enabled',
     onSameUrlNavigation: 'reload'
 })],
