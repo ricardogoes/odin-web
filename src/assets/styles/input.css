@@ -27,7 +27,7 @@
     focus:ring-inset;
 }
 
-.input-sm{ @apply input h-9 text-xs py-2 px-3.5 !important; }
+.input-sm{ @apply input h-9 text-sm py-1 px-3.5 mt-1 !important; }
 .input-md{ @apply input h-10 text-sm py-2.5 px-4 !important; }
 .input-lg{ @apply input h-11 text-base py-2.5 px-4 !important; }
 .input-xl{ @apply input h-12 text-base py-3 px-5 !important; }
@@ -38,4 +38,9 @@
 
 .input-error {
   @apply border-2 border-error-300 focus:outline-error-100 focus:ring-error-300;
+}
+
+.select-sm {
+  @apply input h-9 text-sm pb-1 px-3.5 mt-1 !important;
+  padding-top: 0.400rem !important;
 }

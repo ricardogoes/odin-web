@@ -1,5 +1,5 @@
 <odin-page-heading
-  [title]="'Departamentos'"
+  [title]="'Funcionários'"
   [links]="breadCrumbsLinks"
 ></odin-page-heading>
 
@@ -11,7 +11,7 @@
       (click)="handleOpenDetails('new')"
     >
       <ng-icon class="mr-1" name="heroPlus"></ng-icon>
-      Novo Departamento
+      Novo Funcionário
     </button>
     <div class="relative ml-3">
       <button
@@ -39,7 +39,7 @@
   <odin-table
     [columns]="columns"
     [columnsSortOrder]="columnsSortOrder"
-    [items]="departments"
+    [items]="employees"
     [actions]="actions"
     [canDeactivateItem]="true"
     (handleAction)="handleAction($event)"
@@ -55,12 +55,11 @@
 
 <!--Filters modal-->
 <div *ngIf="showFilterModal" class="fixed inset-y-0 z-50 right-0 w-[400px]">
-  <odin-departments-filter
-    [departments]="departments"
+  <odin-employees-filter
+    [employees]="employees"
     (handleFilterData)="handleFilterData($event)"
     (handleCloseModal)="toggleModal()"
-  ></odin-departments-filter>
-
+  ></odin-employees-filter>
 </div>
 <div
   *ngIf="showFilterModal"

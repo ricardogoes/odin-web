@@ -31,9 +31,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
 
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.authService.getLocalToken()}`,
-        "Cache-Control": "no-cache",
-        Pragma: "no-cache",
+        Authorization: `Bearer ${this.authService.getLocalToken()}`
       },
     });
 

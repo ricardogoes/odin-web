@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 import { AtivoPipe } from '../../pipes/ativo.pipe';
 
@@ -7,11 +7,12 @@ import { TableAction } from './models/table-action.model';
 import { TableColumn } from './models/table-column.model';
 import { TablePipe } from './models/table-pipe.enum';
 import { TableSort } from './models/table-sort.enum';
+import { NgxMaskPipe } from 'ngx-mask';
 
 @Component({
   selector: 'odin-table',
   templateUrl: './table.component.html',
-  providers: [AtivoPipe, DatePipe]
+  providers: [AtivoPipe, DatePipe, NgxMaskPipe, CurrencyPipe]
 })
 export class TableComponent<T> implements OnInit {
 
@@ -26,7 +27,9 @@ export class TableComponent<T> implements OnInit {
 
   constructor(
     private ativoPipe: AtivoPipe,
-    private datePipe: DatePipe
+    private currencyPipe: CurrencyPipe,
+    private datePipe: DatePipe,
+    private ngxMaskPipe: NgxMaskPipe
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +43,11 @@ export class TableComponent<T> implements OnInit {
       case TablePipe.ATIVO:
         return this.ativoPipe.transform(value as boolean);
       case TablePipe.DATETIME:
-        return this.datePipe.transform(value as Date, 'dd/MM/yyyy');
+        return this.datePipe.transform(value as Date, 'dd/MM/yyyy hh:mm');
+      case TablePipe.CPF_CNPJ:
+        return this.ngxMaskPipe.transform(value as string, '00.000.000/0000-00 || 000.000.000-00');
+      case TablePipe.CURRENCY:
+        return this.currencyPipe.transform(value as number, 'BRL');
       default:
         return value;
     }

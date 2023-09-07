@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { HttpTokenInterceptor } from './_shared/interceptors/http.interceptor';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { HttpTokenInterceptor } from './_shared/interceptors/http.interceptor';
   providers: [
     Title,
     provideClientHydration(),
+    provideEnvironmentNgxMask(),
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
     { provide: 'AUTH_API_URL', useValue: environment.authApiUrl },
     { provide: 'BASELINE_API_URL', useValue: environment.baselineApiUrl },

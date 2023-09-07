@@ -6,36 +6,36 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 
 import { BreadcrumbLink } from 'src/app/_shared/components/page-heading/breadcrumb-link.model';
-import { Department } from '../models/departments.model';
-import { DepartmentsService } from '../departments.service';
+import { Position } from '../models/positions.model';
+import { PositionsService } from '../positions.service';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBaseComponent } from 'src/app/_shared/components/form-base/form-base.component';
 import { AuthService } from 'src/app/_shared/services/auth.service';
-import { DepartmentToInsertRequest } from '../models/departments-insert.model';
-import { DepartmentToUpdateRequest } from '../models/departments-update.model';
+import { PositionToInsertRequest } from '../models/positions-insert.model';
+import { PositionToUpdateRequest } from '../models/positions-update.model';
 
 @Component({
-  selector: 'odin-departments-detail',
-  templateUrl: 'departments-detail.component.html',
+  selector: 'odin-positions-detail',
+  templateUrl: 'positions-detail.component.html',
 })
-export class DepartmentsDetailComponent extends FormBaseComponent implements OnInit, AfterViewInit {
+export class PositionsDetailComponent extends FormBaseComponent implements OnInit, AfterViewInit {
   breadCrumbsLinks: BreadcrumbLink[];
 
-  departmentId = "";
+  positionId = "";
 
-  department$ = new Observable<any>();
-  department: Department|undefined;
+  position$ = new Observable<any>();
+  position: Position|undefined;
 
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[] = [];
-  departmentForm: FormGroup;
+  positionForm: FormGroup;
 
   constructor(
     private titleService: Title,
     private fb: FormBuilder,
     private authService: AuthService,
-    private departmentsService: DepartmentsService,
+    private positionsService: PositionsService,
     private spinner: NgxSpinnerService,
     private router: Router,
     private route: ActivatedRoute,
@@ -43,17 +43,18 @@ export class DepartmentsDetailComponent extends FormBaseComponent implements OnI
   ) {
     super();
 
-    this.titleService.setTitle('Odin | Departamentos');
+    this.titleService.setTitle('Odin | Cargos');
 
     this.breadCrumbsLinks = [
       {
-        name: 'Departamentos',
-        route: '/secure/departments',
+        name: 'Cargos',
+        route: '/secure/positions',
       }
     ];
 
-    this.departmentForm = this.fb.group({
-      name: ['', [Validators.required]]
+    this.positionForm = this.fb.group({
+      name: ['', [Validators.required]],
+      base_salary: ['']
     });
 
     const validationMessages = {
@@ -66,23 +67,23 @@ export class DepartmentsDetailComponent extends FormBaseComponent implements OnI
   }
 
   ngOnInit(): void {
-    this.departmentId = this.route.snapshot.paramMap.get('id') ?? "";
+    this.positionId = this.route.snapshot.paramMap.get('id') ?? "";
 
-    if(this.departmentId === 'new')
-      this.setNewDepartment();
+    if(this.positionId === 'new')
+      this.setNewPosition();
     else
-      this.loadDepartment();
+      this.loadPosition();
   }
 
   ngAfterViewInit(): void {
     super.configurarValidacoesFormulario(
       this.formInputElements,
-      this.departmentForm
+      this.positionForm
     );
   }
 
-  setNewDepartment(): void {
-    this.department = {
+  setNewPosition(): void {
+    this.position = {
       id: "",
       customer: { id: this.authService.getCustomerId(), name: '' },
       name: "",
@@ -95,49 +96,50 @@ export class DepartmentsDetailComponent extends FormBaseComponent implements OnI
 
     this.breadCrumbsLinks.push(
       {
-        name: `Novo departamento`,
-        route: `/secure/departments/new`
+        name: `Novo cargo`,
+        route: `/secure/positions/new`
       });
   }
 
-  loadDepartment(): void {
-    this.department$ = this.departmentsService.findById(this.departmentId)
+  loadPosition(): void {
+    this.position$ = this.positionsService.findById(this.positionId)
       .pipe(
-        map((department: Department) => {
-          this.department = department;
+        map((position: Position) => {
+          this.position = position;
           this.breadCrumbsLinks.push(
           {
-            name: `Departamento : ${department.name}`,
-            route: `/secure/departments/${department.id}`
+            name: `Cargo : ${position.name}`,
+            route: `/secure/positions/${position.id}`
           });
 
-          this.departmentForm.patchValue(department);
+          this.positionForm.patchValue(position);
 
           this.spinner.hide();
-          return department;
+          return position;
         })
       );
   }
 
   handleSubmit(): void {
-    if(this.departmentId == 'new')
-      this.insertDepartment();
+    if(this.positionId == 'new')
+      this.insertPosition();
     else
-      this.updateDepartment();
+      this.updatePosition();
   }
 
-  private insertDepartment(): void {
-    const departmentToInsert: DepartmentToInsertRequest = {
+  private insertPosition(): void {
+    const positionToInsert: PositionToInsertRequest = {
       customer_id: this.authService.getCustomerId(),
-      name: this.departmentForm.controls['name'].value,
+      name: this.positionForm.controls['name'].value,
+      base_salary: this.positionForm.controls['base_salary'].value ?? null,
       logged_username: this.authService.getLoggedUsername()
     }
 
-    this.departmentsService.insert(departmentToInsert)
+    this.positionsService.insert(positionToInsert)
       .subscribe({
         next: () => {
-          this.toastrService.success('Departamento inserido com sucesso','Sucesso');
-          this.router.navigate(['/secure/departments']);
+          this.toastrService.success('Cargo inserido com sucesso','Sucesso');
+          this.router.navigate(['/secure/positions']);
         },
         error: (error) => {
           this.toastrService.error(error.error.detail,'Erro')
@@ -145,19 +147,20 @@ export class DepartmentsDetailComponent extends FormBaseComponent implements OnI
       });
   }
 
-  private updateDepartment(): void {
-    const departmentToUpdate: DepartmentToUpdateRequest = {
-      id: this.departmentId,
+  private updatePosition(): void {
+    const positionToUpdate: PositionToUpdateRequest = {
+      id: this.positionId,
       customer_id: this.authService.getCustomerId(),
-      name: this.departmentForm.controls['name'].value,
+      name: this.positionForm.controls['name'].value,
+      base_salary: this.positionForm.controls['base_salary'].value ?? null,
       logged_username: this.authService.getLoggedUsername()
     }
 
-    this.departmentsService.update(this.departmentId, departmentToUpdate)
+    this.positionsService.update(this.positionId, positionToUpdate)
       .subscribe({
         next: () => {
-          this.toastrService.success('Departamento atualizado com sucesso','Sucesso');
-          this.router.navigate(['/secure/departments']);
+          this.toastrService.success('Cargo atualizado com sucesso','Sucesso');
+          this.router.navigate(['/secure/positions']);
         },
         error: (error) => {
           this.toastrService.error(error.error.detail,'Erro')
@@ -166,6 +169,6 @@ export class DepartmentsDetailComponent extends FormBaseComponent implements OnI
   }
 
   handleBackButton(): void {
-    this.router.navigate(['/secure/departments']);
+    this.router.navigate(['/secure/positions']);
   }
 }

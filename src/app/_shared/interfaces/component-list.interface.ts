@@ -1,7 +1,7 @@
 import { TableSort } from "../components/table/models/table-sort.enum";
 import { PaginationParams } from "../models/pagination-params.model";
 
-export interface IComponentList<T> {
+export interface IComponentList<T, TFilter> {
   load(): void;
   handleOpenDetails(id: string): void;
   toggleActionMenu(): void;
@@ -11,6 +11,5 @@ export interface IComponentList<T> {
   handleChangePagination(paginationData: PaginationParams): void;
   handleAction(params: { item: T, action: string }): void;
   handleSort(sortParams: {field: string, sort_order: TableSort}): void;
-  handleFilterData(): void;
-  handleResetFilters(): void;
+  handleFilterData(filterData: TFilter): void;
 }

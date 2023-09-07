@@ -1,0 +1,192 @@
+<odin-page-heading
+  [title]="'Funcionários'"
+  [links]="breadCrumbsLinks"
+></odin-page-heading>
+
+<div *ngIf="employee || (employee$ | async)" class="rounded-md border bg-gray-50 mt-4 mx-3">
+  <form [formGroup]="employeeForm" (ngSubmit)="handleSubmit()">
+    <div class="font-semibold px-4 py-2">
+      <h3>Dados do funcionário</h3>
+    </div>
+    <div class="form-container mx-4">
+      <!--First Name-->
+      <div class="col-start-3 col-span-3">
+        <label for="first_name" class="label">Primeiro nome</label>
+        <input type="text"
+          id="first_name"
+          formControlName="first_name"
+          class="input-sm" [ngClass]="{'input-error': errorMessage['first_name']}"
+          placeholder="Insira o primeiro nome..."
+        />
+        <div class="text-error-500 text-sm" *ngIf="errorMessage['first_name']">
+          <span [innerHTML]="errorMessage['first_name']"></span>
+        </div>
+      </div>
+
+      <!--Last Name-->
+      <div class="col-span-3">
+        <label for="last_name" class="label">Último Nome nome</label>
+        <input type="text"
+          id="last_name"
+          formControlName="last_name"
+          class="input-sm" [ngClass]="{'input-error': errorMessage['last_name']}"
+          placeholder="Insira o último nome..."
+        />
+        <div class="text-error-500 text-sm" *ngIf="errorMessage['last_name']">
+          <span [innerHTML]="errorMessage['last_name']"></span>
+        </div>
+      </div>
+
+      <!--Document-->
+      <div class="col-span-2">
+        <label for="document" class="label">Documento (CPF/CNPJ)</label>
+        <input type="text"
+          id="document"
+          formControlName="document"
+          class="input-sm" [ngClass]="{'input-error': errorMessage['document']}"
+          mask="CPF_CNPJ"
+          placeholder="Insira o CPF/CNPJ..."
+        />
+        <div class="text-error-500 text-sm" *ngIf="errorMessage['document']">
+          <span [innerHTML]="errorMessage['document']"></span>
+        </div>
+      </div>
+
+      <!--Email-->
+      <div class="col-start-3 col-span-4">
+        <label for="email" class="label">Email</label>
+        <input type="text"
+          id="email"
+          formControlName="email"
+          class="input-sm" [ngClass]="{'input-error': errorMessage['email']}"
+          placeholder="Insira o email..."
+        />
+        <div class="text-error-500 text-sm" *ngIf="errorMessage['email']">
+          <span [innerHTML]="errorMessage['email']"></span>
+        </div>
+      </div>
+
+      <!--Department-->
+      <div *ngIf="departments$ | async" class="col-span-2">
+        <label for="email" class="label">Departmento</label>
+        <select
+          id="department_id"
+          formControlName="department_id"
+          class="select-sm">
+          <option *ngFor="let department of departments" [value]="department.id">{{department.name}}</option>
+        </select>
+      </div>
+
+      <!--<div *ngIf="positions$ | async" class="col-span-2">
+        <label for="email" class="label">Cargo atual</label>
+        <select
+          id="position_id"
+          formControlName="position_id"
+          class="select-sm">
+          <option *ngFor="let position of positions" [value]="position.id">{{position.name}}</option>
+        </select>
+      </div>
+      -->
+    </div>
+
+    <div class="font-semibold px-4 py-2 mt-4 border-t">
+      <h3>Dados de endereço</h3>
+    </div>
+    <div class="form-container mx-4">
+      <!--CEP-->
+      <div class="col-start-3 col-span-2">
+        <label for="zip_code" class="label">CEP</label>
+        <div class="flex items-end ">
+          <input type="text"
+            id="zip_code"
+            formControlName="zip_code"
+            class="input-sm mr-2 col-span-3"
+            [mask]="'00000-000'"
+            placeholder="Insira o CEP..."
+          />
+          <button type="button"
+            class="button-gray-outlined button-sm w-32"
+            (click)="handleFindCep()"
+            [disabled]="employeeForm.controls['zip_code'].value === ''">
+            <ng-icon class="mr-1" name="heroMagnifyingGlass"></ng-icon>
+            Buscar
+          </button>
+        </div>
+      </div>
+      <!--Street Name-->
+      <div class="col-start-3 col-span-4">
+        <label for="street_name" class="label">Logradouro</label>
+        <input type="text"
+          id="street_name"
+          formControlName="street_name"
+          class="input-sm bg-gray-200" readonly
+        />
+      </div>
+
+      <!--Street Nymber-->
+      <div class="col-span-2">
+        <label for="street_number" class="label">Número</label>
+        <input type="text"
+          id="street_number"
+          formControlName="street_number"
+          class="input-sm"
+          placeholder="Insira o número..."
+        />
+      </div>
+
+      <!--Complement-->
+      <div class="col-span-2">
+        <label for="complement" class="label">Complemento</label>
+        <input type="text"
+          id="complement"
+          formControlName="complement"
+          class="input-sm"
+          placeholder="Insira o complemento..."
+        />
+      </div>
+
+      <!--Bairro-->
+      <div class="col-start-3 col-span-4">
+        <label for="neighborhood" class="label">Bairro</label>
+        <input type="text"
+          id="neighborhood"
+          formControlName="neighborhood"
+          class="input-sm bg-gray-200" readonly
+        />
+      </div>
+
+      <!--City-->
+      <div class="col-span-3">
+        <label for="city" class="label">Cidade</label>
+        <input type="text"
+          id="city"
+          formControlName="city"
+          class="input-sm bg-gray-200" readonly
+        />
+      </div>
+
+      <!--UF-->
+      <div class="col-span-1">
+        <label for="state" class="label">UF</label>
+        <input type="text"
+          id="state"
+          formControlName="state"
+          class="input-sm bg-gray-200" readonly
+        />
+      </div>
+    </div>
+
+
+    <div class="form-container border-t mt-6 mb-2 mx-4">
+      <button type="button"
+        class="button-gray-outlined button-sm col-span-1 row-end-1 col-start-11 mt-2"
+        (click)="handleBackButton()">
+        Voltar
+      </button>
+      <button type="submit" class="button-primary button-sm col-span-1 row-end-1 col-start-12 mt-2" [disabled]="employeeForm.invalid">
+        Salvar
+      </button>
+    </div>
+  </form>
+</div>
+

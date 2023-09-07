@@ -1,27 +1,37 @@
 <odin-page-heading
-  [title]="'Departamentos'"
+  [title]="'Cargos'"
   [links]="breadCrumbsLinks"
 ></odin-page-heading>
 
-<div *ngIf="department || (department$ | async)" class="rounded-md border bg-gray-50 mt-4 mx-3">
-  <form [formGroup]="departmentForm" (ngSubmit)="handleSubmit()">
+<div *ngIf="position || (position$ | async)" class="rounded-md border bg-gray-50 mt-4 mx-3">
+  <form [formGroup]="positionForm" (ngSubmit)="handleSubmit()">
 
     <div class="font-semibold px-4 py-2">
-      <h3>Dados do departamento</h3>
+      <h3>Dados do cargo</h3>
     </div>
 
     <div class="form-container mx-4">
       <div class="col-start-3 col-span-6">
-        <label for="name" class="label">Nome Departamento</label>
+        <label for="name" class="label">Nome Cargo</label>
         <input type="text"
           id="name"
           formControlName="name"
           class="input-sm" [ngClass]="{'input-error': errorMessage['name']}"
-          placeholder="Insira o nome do departamento..."
+          placeholder="Insira o nome do cargo..."
         />
         <div class="text-error-500 text-sm" *ngIf="errorMessage['name']">
           <span [innerHTML]="errorMessage['name']"></span>
         </div>
+      </div>
+      <div class="col-span-2">
+        <label for="name" class="label">Salário Base</label>
+        <input type="text"
+          id="base_salary"
+          formControlName="base_salary"
+          class="input-sm"
+          mask="separator.2" thousandSeparator="." prefix="R$ "
+          placeholder="Insira o salário base..."
+        />
       </div>
     </div>
     <div class="form-container border-t mt-6 mb-2 mx-4">
@@ -30,7 +40,7 @@
         (click)="handleBackButton()">
         Voltar
       </button>
-      <button type="submit" class="button-primary button-sm col-span-1 row-end-1 col-start-12 mt-2" [disabled]="departmentForm.invalid">
+      <button type="submit" class="button-primary button-sm col-span-1 row-end-1 col-start-12 mt-2" [disabled]="positionForm.invalid">
         Salvar
       </button>
     </div>

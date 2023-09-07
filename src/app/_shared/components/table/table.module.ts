@@ -19,6 +19,7 @@ import { TooltipIconModule } from '../tooltip-icon/tooltip-icon.module';
 import { PipesModule } from '../../pipes/pipes.module';
 
 import { TableComponent } from './table.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
     declarations: [
@@ -37,9 +38,11 @@ import { TableComponent } from './table.component';
           heroCheck,
           heroMinus
         }),
+        NgxMaskDirective, NgxMaskPipe,
         TooltipIconModule,
         PipesModule
     ],
-    exports: [TableComponent]
+    exports: [TableComponent],
+    providers: [provideNgxMask()]
 })
 export class TableModule {}

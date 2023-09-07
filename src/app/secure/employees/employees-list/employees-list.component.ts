@@ -8,8 +8,8 @@ import { IComponentList } from 'src/app/_shared/interfaces/component-list.interf
 
 import { BreadcrumbLink } from 'src/app/_shared/components/page-heading/breadcrumb-link.model';
 import { PaginatedApiResponse } from 'src/app/_shared/models/paginated-api-response.model';
-import { Department } from '../models/departments.model';
-import { DepartmentsService } from '../departments.service';
+import { Employee } from '../models/employees.model';
+import { EmployeesService } from '../employees.service';
 import { PaginationParams } from 'src/app/_shared/models/pagination-params.model';
 
 import { TableAction } from 'src/app/_shared/components/table/models/table-action.model';
@@ -18,13 +18,13 @@ import { TablePipe } from 'src/app/_shared/components/table/models/table-pipe.en
 import { TableSort } from 'src/app/_shared/components/table/models/table-sort.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DepartmentFilter } from '../models/departments-filter.model';
+import { EmployeeFilter } from '../models/employees-filter.model';
 
 @Component({
-  selector: 'odin-departments-list',
-  templateUrl: 'departments-list.component.html',
+  selector: 'odin-employees-list',
+  templateUrl: 'employees-list.component.html',
 })
-export class DepartmentsListComponent implements OnInit, IComponentList<Department, DepartmentFilter> {
+export class EmployeesListComponent implements OnInit, IComponentList<Employee, EmployeeFilter> {
   breadCrumbsLinks: BreadcrumbLink[];
 
   columns: TableColumn[];
@@ -34,9 +34,9 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
   paginationData: PaginationParams;
   queryParams: string;
 
-  paginatedApiResponse$: Observable<PaginatedApiResponse<Department>> = new Observable<PaginatedApiResponse<Department>>();
+  paginatedApiResponse$: Observable<PaginatedApiResponse<Employee>> = new Observable<PaginatedApiResponse<Employee>>();
 
-  departments: Department[] = [];
+  employees: Employee[] = [];
 
   nameToBeSearched = '';
 
@@ -46,34 +46,27 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
   constructor(
     private titleService: Title,
     private fb: FormBuilder,
-    private departmentsService: DepartmentsService,
+    private employeesService: EmployeesService,
     private router: Router,
     private spinner: NgxSpinnerService,
     private toastrService: ToastrService
   ) {
-    this.titleService.setTitle('Odin | Departamentos');
+    this.titleService.setTitle('Odin | Funcionários');
 
     this.breadCrumbsLinks = [
       {
-        name: 'Departamentos',
-        route: '/secure/departments',
+        name: 'Funcionários',
+        route: '/secure/employees',
       },
     ];
 
     this.columns = [
-      { field: 'name', header_name: 'Nome', sort: true },
-      {
-        field: 'is_active',
-        header_name: 'Status',
-        sort: false,
-        pipe: TablePipe.ATIVO,
-      },
-      {
-        field: 'last_updated_at',
-        header_name: 'Atualizado em',
-        sort: true,
-        pipe: TablePipe.DATETIME,
-      },
+      { field: 'fullname', header_name: 'Nome Completo', sort: true },
+      { field: 'document', header_name: 'Documento', sort: true, pipe: TablePipe.CPF_CNPJ },
+      { field: 'email', header_name: 'Email', sort: true },
+      { field: 'department_name', header_name: 'Departamento', sort: true },
+      { field: 'is_active', header_name: 'Status', sort: false, pipe: TablePipe.ATIVO },
+      { field: 'last_updated_at', header_name: 'Atualizado em', sort: true, pipe: TablePipe.DATETIME, },
       { field: 'last_updated_by', header_name: 'Atualizado por', sort: true },
     ];
 
@@ -101,11 +94,11 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
   }
 
   get distinctCreatedBy(): string[] {
-    return [...new Set(this.departments.map((item) => item.created_by))];
+    return [...new Set(this.employees.map((item) => item.created_by))];
   }
 
   get distinctLastUpdatedBy(): string[] {
-    return [...new Set(this.departments.map((item) => item.last_updated_by))];
+    return [...new Set(this.employees.map((item) => item.last_updated_by))];
   }
 
   setDefaultQueryParams(): void {
@@ -121,7 +114,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
 
   load(): void {
     this.spinner.show();
-    this.paginatedApiResponse$ = this.departmentsService
+    this.paginatedApiResponse$ = this.employeesService
       .findAll(this.queryParams)
       .pipe(
         map((response) => {
@@ -132,8 +125,12 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
             total_records: response.total_records,
           };
 
-          this.departments = [...response.items];
-          console.log(this.departments);
+          this.employees = [...response.items];
+          this.employees.forEach(employee => {
+            employee.fullname = `${employee.first_name} ${employee.last_name}`,
+            employee.department_name = employee.department?.name
+          });
+
           this.spinner.hide();
           return response;
         }),
@@ -146,8 +143,8 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
       );
   }
 
-  handleOpenDetails(departmentId: string): void {
-    this.router.navigate(['/secure/departments', departmentId]);
+  handleOpenDetails(employeeId: string): void {
+    this.router.navigate(['/secure/employees', employeeId]);
   }
 
   toggleActionMenu(): void {
@@ -184,7 +181,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     this.load();
   }
 
-  handleAction(params: { item: Department, action: string }): void {
+  handleAction(params: { item: Employee, action: string }): void {
     switch(params.action) {
       case "edit":
         this.handleOpenDetails(params.item.id);
@@ -205,32 +202,46 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     this.queryParams = `?page_number=1&page_size=${this.paginationData.page_size}`;
 
     if (this.nameToBeSearched !== '') {
-      this.queryParams += `&name=${this.nameToBeSearched}`;
+      this.queryParams += `&first_name=${this.nameToBeSearched}`;
     }
 
-    this.columnsSortOrder.delete(sortParams.field);
+    const sortField = sortParams.field === 'fullname' ? 'first_name' : sortParams.field;
+
+    this.columnsSortOrder.delete(sortField);
 
     switch (sortParams.sort_order) {
       case TableSort.ASC:
-        this.columnsSortOrder.set(sortParams.field, TableSort.DESC);
+        this.columnsSortOrder.set(sortField , TableSort.DESC);
         break;
       case TableSort.DESC:
       case TableSort.NOT_ORDERED:
-        this.columnsSortOrder.set(sortParams.field, TableSort.ASC);
+        this.columnsSortOrder.set(sortField, TableSort.ASC);
         break;
     }
 
-    const sortOrder = this.columnsSortOrder.get(sortParams.field) == TableSort.ASC ? 'asc' : 'desc';
-    this.queryParams += `&sort=${sortParams.field} ${sortOrder}`;
+    const sortOrder = this.columnsSortOrder.get(sortField) == TableSort.ASC ? 'asc' : 'desc';
+    this.queryParams += `&sort=${sortField} ${sortOrder}`;
 
     this.load();
   }
 
-  handleFilterData(filterData: DepartmentFilter): void {
+  handleFilterData(filterData: EmployeeFilter): void {
     this.queryParams = `?page_number=1&page_size=${this.paginationData.page_size}`;
 
-    if (filterData.name)
-      this.queryParams += `&name=${filterData.name}`;
+    if (filterData.first_name)
+      this.queryParams += `&first_name=${filterData.first_name}`;
+
+    if (filterData.last_name)
+      this.queryParams += `&last_name=${filterData.last_name}`;
+
+    if (filterData.document)
+      this.queryParams += `&document=${filterData.document}`;
+
+    if (filterData.email)
+      this.queryParams += `&email=${filterData.email}`;
+
+    if (filterData.department_id)
+      this.queryParams += `&department_id=${filterData.department_id}`;
 
     if (filterData.is_active)
       this.queryParams += `&is_active=${filterData.is_active}`;
@@ -253,10 +264,10 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     this.toggleActionMenu();
   }
 
-  private activate(departmentId: string): void {
-    this.departmentsService.activate(departmentId).subscribe({
+  private activate(employeeId: string): void {
+    this.employeesService.activate(employeeId).subscribe({
       next: () => {
-        this.toastrService.success('Departamento atualizado com sucesso', 'Sucesso');
+        this.toastrService.success('Funcionário atualizado com sucesso', 'Sucesso');
         this.load();
       },
       error: (error) => {
@@ -265,10 +276,10 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     });
   }
 
-  private deactivate(departmentId: string): void {
-    this.departmentsService.deactivate(departmentId).subscribe({
+  private deactivate(employeeId: string): void {
+    this.employeesService.deactivate(employeeId).subscribe({
       next: () => {
-        this.toastrService.success('Departamento atualizado com sucesso', 'Sucesso');
+        this.toastrService.success('Funcionário atualizado com sucesso', 'Sucesso');
         this.load();
       },
       error: (error) => {

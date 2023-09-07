@@ -1,3 +1,3 @@
 export enum TablePipe {
-  ATIVO, DATETIME
+  ATIVO, DATETIME, CPF_CNPJ, CURRENCY
 }

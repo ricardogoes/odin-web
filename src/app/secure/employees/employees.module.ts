@@ -20,16 +20,17 @@ import { PaginationModule } from 'src/app/_shared/components/pagination/paginati
 import { TableModule } from 'src/app/_shared/components/table/table.module';
 import { DatePickerModule } from 'src/app/_shared/components/date-picker/date-picker.module';
 
-import { DepartmentsRoutingModule } from './departments-routing.module';
-import { DepartmentsListComponent } from './departments-list/departments-list.component';
-import { DepartmentsDetailComponent } from './departments-detail/departments-detail.component';
-import { DepartmentsesFilterComponent } from './departments-filter/departments-filter.component';
+import { EmployeesRoutingModule } from './employees-routing.module';
+import { EmployeesListComponent } from './employees-list/employees-list.component';
+import { EmployeesDetailComponent } from './employees-detail/employees-detail.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { EmployeesFilterComponent } from './employees-filter/employees-filter.component';
 
 @NgModule({
   declarations: [
-    DepartmentsListComponent,
-    DepartmentsesFilterComponent,
-    DepartmentsDetailComponent
+    EmployeesListComponent,
+    EmployeesFilterComponent,
+    EmployeesDetailComponent
   ],
   imports: [
     CommonModule,
@@ -45,12 +46,14 @@ import { DepartmentsesFilterComponent } from './departments-filter/departments-f
       heroEllipsisVertical,
       heroArrowUpTray
     }),
-    DepartmentsRoutingModule,
+    NgxMaskDirective, NgxMaskPipe,
+    EmployeesRoutingModule,
     PageHeadingModule,
     SearchListHeadingModule,
     TableModule,
     PaginationModule,
     DatePickerModule,
   ],
+  providers: [provideNgxMask()]
 })
-export class DepartmentsModule {}
+export class EmployeesModule {}

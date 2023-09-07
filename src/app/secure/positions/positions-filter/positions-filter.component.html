@@ -1,0 +1,117 @@
+<div class="relative w-auto mx-auto max-w-6xl">
+  <!--content-->
+  <form [formGroup]="filterForm" (ngSubmit)="filterData()" autocomplete="off">
+    <div
+      class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-screen bg-white outline-none focus:outline-none"
+    >
+      <!--header-->
+      <div
+        class="flex items-baseline justify-between ps-6 py-3 border-b border-solid border-slate-200 rounded-t"
+      >
+        <h2>Filtros</h2>
+        <button
+          type="button"
+          class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+          (click)="closeModal()"
+        >
+          <span
+            class="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none"
+            >×</span
+          >
+        </button>
+      </div>
+
+      <!--body-->
+      <div class="relative p-6 flex-auto">
+        <div class="col-span-full">
+          <label for="name" class="label">Nome</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="input-sm"
+            placeholder="Nome do departamento"
+          />
+        </div>
+        <div class="col-span-full mt-2">
+          <label for="is_active" class="label">Status</label>
+          <select
+            id="is_active"
+            formControlName="is_active"
+            class="input-sm select"
+          >
+            <option value=""></option>
+            <option value="true">Ativo</option>
+            <option value="false">Inativo</option>
+          </select>
+        </div>
+
+        <div class="col-span-full mt-4">
+          <span class="label">Atualizado em</span>
+        </div>
+        <div class="relative columns-2 mt-2 z-40">
+          <label for="last_updated_at_start" class="label"
+            >Data inicial</label
+          >
+          <odin-date-picker
+            [id]="'last_updated_at_start'"
+            [controlName]="'last_updated_at_start'"
+            [width]="'w-[168px]'"
+          ></odin-date-picker>
+          <label for="last_updated_at_end" class="label">Data final</label>
+          <odin-date-picker
+            [id]="'last_updated_at_start'"
+            [controlName]="'last_updated_at_start'"
+            [width]="'w-[168px]'"
+          ></odin-date-picker>
+        </div>
+
+        <div class="col-span-full mt-12">
+          <label for="last_updated_by" class="label">Atualizado por</label>
+          <select
+            id="last_updated_by"
+            formControlName="last_updated_by"
+            class="input-sm select"
+          >
+            <option value=""></option>
+            <option
+              *ngFor="let lastUpdatedBy of distinctLastUpdatedBy"
+              [value]="lastUpdatedBy"
+            >
+              {{ lastUpdatedBy }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!--footer-->
+      <div
+        class="flex items-center justify-end px-2 py-3 border-t bottom-0 border-solid border-slate-200 rounded-b"
+      >
+        <button
+          type="button"
+          class="button-gray button-sm col-span-full row-end-1 col-start-1 mr-2"
+          (click)="handleResetFilters()"
+        >
+          <ng-icon
+            name="heroBackspace"
+            size="16"
+            class="mr-2"
+          ></ng-icon>
+          Limpar
+        </button>
+        <button
+          type="submit"
+          class="button-primary button-sm col-span-full row-end-1 col-start-1 mr-2"
+        >
+          <ng-icon
+            name="heroMagnifyingGlass"
+            size="16"
+            class="mr-2"
+          ></ng-icon>
+          Filtrar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

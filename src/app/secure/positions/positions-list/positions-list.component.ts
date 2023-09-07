@@ -8,8 +8,8 @@ import { IComponentList } from 'src/app/_shared/interfaces/component-list.interf
 
 import { BreadcrumbLink } from 'src/app/_shared/components/page-heading/breadcrumb-link.model';
 import { PaginatedApiResponse } from 'src/app/_shared/models/paginated-api-response.model';
-import { Department } from '../models/departments.model';
-import { DepartmentsService } from '../departments.service';
+import { Position } from '../models/positions.model';
+import { PositionsService } from '../positions.service';
 import { PaginationParams } from 'src/app/_shared/models/pagination-params.model';
 
 import { TableAction } from 'src/app/_shared/components/table/models/table-action.model';
@@ -18,13 +18,13 @@ import { TablePipe } from 'src/app/_shared/components/table/models/table-pipe.en
 import { TableSort } from 'src/app/_shared/components/table/models/table-sort.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DepartmentFilter } from '../models/departments-filter.model';
+import { PositionFilter } from '../models/positions-filter.model';
 
 @Component({
-  selector: 'odin-departments-list',
-  templateUrl: 'departments-list.component.html',
+  selector: 'odin-positions-list',
+  templateUrl: 'positions-list.component.html',
 })
-export class DepartmentsListComponent implements OnInit, IComponentList<Department, DepartmentFilter> {
+export class PositionsListComponent implements OnInit, IComponentList<Position, PositionFilter> {
   breadCrumbsLinks: BreadcrumbLink[];
 
   columns: TableColumn[];
@@ -34,9 +34,9 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
   paginationData: PaginationParams;
   queryParams: string;
 
-  paginatedApiResponse$: Observable<PaginatedApiResponse<Department>> = new Observable<PaginatedApiResponse<Department>>();
+  paginatedApiResponse$: Observable<PaginatedApiResponse<Position>> = new Observable<PaginatedApiResponse<Position>>();
 
-  departments: Department[] = [];
+  positions: Position[] = [];
 
   nameToBeSearched = '';
 
@@ -46,34 +46,25 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
   constructor(
     private titleService: Title,
     private fb: FormBuilder,
-    private departmentsService: DepartmentsService,
+    private positionsService: PositionsService,
     private router: Router,
     private spinner: NgxSpinnerService,
     private toastrService: ToastrService
   ) {
-    this.titleService.setTitle('Odin | Departamentos');
+    this.titleService.setTitle('Odin | Cargos');
 
     this.breadCrumbsLinks = [
       {
-        name: 'Departamentos',
-        route: '/secure/departments',
+        name: 'Cargos',
+        route: '/secure/positions',
       },
     ];
 
     this.columns = [
       { field: 'name', header_name: 'Nome', sort: true },
-      {
-        field: 'is_active',
-        header_name: 'Status',
-        sort: false,
-        pipe: TablePipe.ATIVO,
-      },
-      {
-        field: 'last_updated_at',
-        header_name: 'Atualizado em',
-        sort: true,
-        pipe: TablePipe.DATETIME,
-      },
+      { field: 'base_salary', header_name: 'Salário Base', sort: false, pipe: TablePipe.CURRENCY },
+      { field: 'is_active', header_name: 'Status', sort: false, pipe: TablePipe.ATIVO, },
+      { field: 'last_updated_at', header_name: 'Atualizado em', sort: true, pipe: TablePipe.DATETIME, },
       { field: 'last_updated_by', header_name: 'Atualizado por', sort: true },
     ];
 
@@ -96,16 +87,15 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
     this.load();
   }
 
   get distinctCreatedBy(): string[] {
-    return [...new Set(this.departments.map((item) => item.created_by))];
+    return [...new Set(this.positions.map((item) => item.created_by))];
   }
 
   get distinctLastUpdatedBy(): string[] {
-    return [...new Set(this.departments.map((item) => item.last_updated_by))];
+    return [...new Set(this.positions.map((item) => item.last_updated_by))];
   }
 
   setDefaultQueryParams(): void {
@@ -121,7 +111,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
 
   load(): void {
     this.spinner.show();
-    this.paginatedApiResponse$ = this.departmentsService
+    this.paginatedApiResponse$ = this.positionsService
       .findAll(this.queryParams)
       .pipe(
         map((response) => {
@@ -132,13 +122,14 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
             total_records: response.total_records,
           };
 
-          this.departments = [...response.items];
-          console.log(this.departments);
+          this.positions = [...response.items];
+
           this.spinner.hide();
           return response;
         }),
         catchError((error) => {
           this.spinner.hide();
+          console.log(JSON.stringify(error));
           this.toastrService.error(error.error.detail, 'Erro');
 
           return EMPTY;
@@ -146,8 +137,8 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
       );
   }
 
-  handleOpenDetails(departmentId: string): void {
-    this.router.navigate(['/secure/departments', departmentId]);
+  handleOpenDetails(positionId: string): void {
+    this.router.navigate(['/secure/positions', positionId]);
   }
 
   toggleActionMenu(): void {
@@ -184,7 +175,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     this.load();
   }
 
-  handleAction(params: { item: Department, action: string }): void {
+  handleAction(params: { item: Position, action: string }): void {
     switch(params.action) {
       case "edit":
         this.handleOpenDetails(params.item.id);
@@ -226,7 +217,7 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     this.load();
   }
 
-  handleFilterData(filterData: DepartmentFilter): void {
+  handleFilterData(filterData: PositionFilter): void {
     this.queryParams = `?page_number=1&page_size=${this.paginationData.page_size}`;
 
     if (filterData.name)
@@ -253,8 +244,8 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     this.toggleActionMenu();
   }
 
-  private activate(departmentId: string): void {
-    this.departmentsService.activate(departmentId).subscribe({
+  private activate(positionId: string): void {
+    this.positionsService.activate(positionId).subscribe({
       next: () => {
         this.toastrService.success('Departamento atualizado com sucesso', 'Sucesso');
         this.load();
@@ -265,8 +256,8 @@ export class DepartmentsListComponent implements OnInit, IComponentList<Departme
     });
   }
 
-  private deactivate(departmentId: string): void {
-    this.departmentsService.deactivate(departmentId).subscribe({
+  private deactivate(positionId: string): void {
+    this.positionsService.deactivate(positionId).subscribe({
       next: () => {
         this.toastrService.success('Departamento atualizado com sucesso', 'Sucesso');
         this.load();
