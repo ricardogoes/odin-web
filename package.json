@@ -10,6 +10,7 @@
     "dev:ssr": "ng run odin-web:serve-ssr",
     "serve:ssr": "node dist/odin-web/server/main.js",
     "build:ssr": "ng build && ng run odin-web:server",
+    "build:prod:ssr": "ng build --configuration production && ng run odin-web:server",
     "prerender": "ng run odin-web:prerender",
     "lint": "ng lint",
     "prepare": "husky install",
