@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  develop-pipeline:
+  main-pipeline:
     runs-on: ubuntu-latest
 
     steps:
