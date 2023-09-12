@@ -1,0 +1,24 @@
+name: develop-pipeline
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  develop-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node .JS
+        uses: actions/setup-node@v2
+        with:
+          dotnet-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build SSR
+        run: npm run build:ssr
